@@ -17,6 +17,7 @@
  */
 package it.polito.elite.enocean.enj.eep.eep26.F6.F602;
 
+import it.polito.elite.enocean.enj.communication.EnJConnection;
 import it.polito.elite.enocean.enj.eep.EEP;
 import it.polito.elite.enocean.enj.eep.Rorg;
 
@@ -57,5 +58,32 @@ public abstract class F602 extends EEP
 
 		// build the attribute dispatching worker
 		this.attributeNotificationWorker = Executors.newFixedThreadPool(1);
+	}
+
+	/**
+	 * F6.02 CMD 0x1 Implements the CMD 0x1 of the F6.02 EnOcean Equipment
+	 * Profile, which allows setting the output level of a F6.02 device (On, Off, (dimming not supported yet)).
+	 *
+	 * @param connection
+	 *            The {@EnJConnection} link to be used for
+	 *            sending the command, packet encapsulation will be performed at
+	 *            such level.
+	 * @param outputValue
+	 *            The required ouput value. A byte representing the value of click
+	 *            between ON (0x50) and OFF (0x70).
+	 */
+	public void actuatorSetOutput(EnJConnection connection, byte[] deviceAddress, byte outputValue)
+	{
+		// prepare the data payload to host "desired" values
+		byte dataByte[] = new byte[2];
+
+		// add the packet rorg
+		dataByte[0] = F602.rorg.getRorgValue();
+
+		// Output value bit 6 to 0
+		dataByte[1] = outputValue;
+
+		// send the payload for connection-layer encapsulation
+		connection.sendRadioCommand(deviceAddress, dataByte);
 	}
 }

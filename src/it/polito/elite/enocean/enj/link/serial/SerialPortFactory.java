@@ -17,6 +17,7 @@
  */
 package it.polito.elite.enocean.enj.link.serial;
 
+import java.util.Enumeration;
 import java.util.logging.Logger;
 
 import gnu.io.CommPort;
@@ -63,7 +64,7 @@ public class SerialPortFactory
 
 			// sets the port name (TODO: check if needed)
 			System.setProperty("gnu.io.rxtx.SerialPorts", portName);
-
+			Enumeration pList = CommPortIdentifier.getPortIdentifiers();
 			// build a port identifier given the port id as a string
 			CommPortIdentifier portIdentifier = CommPortIdentifier
 					.getPortIdentifier(portName);

@@ -389,6 +389,7 @@ public class ESP3Packet
 		dataLenght[1] = partialBuffer[2];
 		byte optLenght = partialBuffer[3];
 
+
 		// byte array to unsigned int conversion
 		int dLenght = ((dataLenght[0] << 8) & 0xff00)
 				+ ((dataLenght[1]) & 0xff);

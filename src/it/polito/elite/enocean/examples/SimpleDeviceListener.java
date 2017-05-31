@@ -60,36 +60,28 @@ public class SimpleDeviceListener implements EnJDeviceListener
 		SimpleMovementListener movementListener = new SimpleMovementListener();
 
 		// handle device types
-		if (device.getEEP().getChannelAttribute(0,
-				EEP26RockerSwitch2RockerAction.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0,
-					EEP26RockerSwitch2RockerAction.NAME,
-					new SimpleRockerSwitchListener());
-		if (device.getEEP().getChannelAttribute(0,
-				EEP26TemperatureInverseLinear.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0,
-					EEP26TemperatureInverseLinear.NAME,
-					new SimpleTemperatureListener());
+		if (device.getEEP().getChannelAttribute(0, EEP26RockerSwitch2RockerAction.NAME) != null)
+			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerAction.NAME, new SimpleRockerSwitchListener());
+
+		if (device.getEEP().getChannelAttribute(0, EEP26TemperatureInverseLinear.NAME) != null)
+			device.getEEP().addEEP26AttributeListener(0, EEP26TemperatureInverseLinear.NAME, new SimpleTemperatureListener());
+
 		if (device.getEEP().getChannelAttribute(0, EEP26Switching.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0, EEP26Switching.NAME,
-					new SimpleContactSwitchListener());
+			device.getEEP().addEEP26AttributeListener(0, EEP26Switching.NAME, new SimpleContactSwitchListener());
+
 		if (device.getEEP().getChannelAttribute(0, EEP26PIRStatus.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0, EEP26PIRStatus.NAME,
-					movementListener);
+			device.getEEP().addEEP26AttributeListener(0, EEP26PIRStatus.NAME, movementListener);
+
 		if (device.getEEP().getChannelAttribute(0, EEP26SupplyVoltage.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0,
-					EEP26SupplyVoltage.NAME, movementListener);
-		if (device.getEEP().getChannelAttribute(0,
-				EEP26SupplyVoltageAvailability.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0,
-					EEP26SupplyVoltageAvailability.NAME, movementListener);
+			device.getEEP().addEEP26AttributeListener(0, EEP26SupplyVoltage.NAME, movementListener);
+
+		if (device.getEEP().getChannelAttribute(0, EEP26SupplyVoltageAvailability.NAME) != null)
+			device.getEEP().addEEP26AttributeListener(0, EEP26SupplyVoltageAvailability.NAME, movementListener);
+
 		if (device.getEEP().getChannelAttribute(0, EEP26PowerMeasurement.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0,
-					EEP26PowerMeasurement.NAME, new SimplePowerListener());
-		if ((device.getEEP()
-				.getChannelAttribute(0, EEP26TemperatureLinear.NAME) != null)
-				&& (device.getEEP().getChannelAttribute(0,
-						EEP26HumidityLinear.NAME) != null))
+			device.getEEP().addEEP26AttributeListener(0, EEP26PowerMeasurement.NAME, new SimplePowerListener());
+
+		if ((device.getEEP().getChannelAttribute(0, EEP26TemperatureLinear.NAME) != null) && (device.getEEP().getChannelAttribute(0, EEP26HumidityLinear.NAME) != null))
 		{
 			EEPAttributeChangeListener listener = new SimpleTemperatureAndHumidityListener();
 			device.getEEP().addEEP26AttributeListener(0,
@@ -97,8 +89,8 @@ public class SimpleDeviceListener implements EnJDeviceListener
 			device.getEEP().addEEP26AttributeListener(0,
 					EEP26HumidityLinear.NAME, listener);
 		}
-		if (device.getEEP().getChannelAttribute(0,
-				EEP26HandleRotation.NAME) != null)
+
+		if (device.getEEP().getChannelAttribute(0, EEP26HandleRotation.NAME) != null)
 			device.getEEP().addEEP26AttributeListener(0, EEP26HandleRotation.NAME, new SimpleWindowHandleListener());
 	}
 

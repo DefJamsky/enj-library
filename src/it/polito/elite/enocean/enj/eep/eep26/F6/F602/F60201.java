@@ -17,8 +17,10 @@
  */
 package it.polito.elite.enocean.enj.eep.eep26.F6.F602;
 
+import it.polito.elite.enocean.enj.communication.EnJConnection;
 import it.polito.elite.enocean.enj.eep.EEPAttributeChangeDispatcher;
 import it.polito.elite.enocean.enj.eep.EEPIdentifier;
+import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D201DimMode;
 import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerAction;
 import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerButtonCount;
 import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerEnergyBow;
@@ -192,5 +194,21 @@ public class F60201 extends F602
 		}
 
 		return success;
+	}
+
+
+	/**
+	 * F60201 send a command like to interact for example with the OMNIO AWAG module enocean
+	 * @param connection
+	 * The {@EnJConnection} link to be used for
+	 *            sending the command, packet encapsulation will be performed at
+	 *            such level.
+	 * @param command true for ON, false for off
+	 */
+	public void actuatorSetOuput(EnJConnection connection,
+								 byte[] deviceAddress, boolean command)
+	{
+		// exec the command by using the D201 general purpose implementation
+		super.actuatorSetOutput(connection, deviceAddress, command ? (byte) 0x50 : (byte) 0x70);
 	}
 }

@@ -127,6 +127,7 @@ public class PacketReceiver implements SerialPortEventListener
 	{
 		try
 		{
+			boolean treatEvent = false;
 			// Input Stream of the serial port
 			InputStream serialInputStream = this.serialPort.getInputStream();
 
@@ -148,7 +149,7 @@ public class PacketReceiver implements SerialPortEventListener
 					byte readedByteValue = (byte) (readedIntValue & 0xff);
 
 					// check for the packet sync byte
-					if (readedByteValue == ESP3Packet.SYNC_BYTE)
+					if (readedByteValue == ESP3Packet.SYNC_BYTE && !treatEvent)
 					{
 
 						// parsed packet
@@ -156,11 +157,13 @@ public class PacketReceiver implements SerialPortEventListener
 
 						// clear the buffer
 						this.buffer.clear();
+
+						treatEvent = true;
 					}
 
 					// Store the current byte in the packet buffer (always
 					// starts with a sync byte)
-					this.buffer.add(Byte.valueOf(readedByteValue));
+					this.buffer.add(readedByteValue);
 
 					// check the buffer size
 					if (this.buffer.size() == 4)
@@ -177,6 +180,7 @@ public class PacketReceiver implements SerialPortEventListener
 						// compute the packet lenght
 						this.packetLenght = ESP3Packet
 								.getPacketLenght(receivedBytes);
+
 					}
 
 					// check the end of the packet

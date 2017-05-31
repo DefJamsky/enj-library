@@ -23,6 +23,8 @@ import it.polito.elite.enocean.enj.communication.timing.tasks.EnJDeviceChangeDel
 import it.polito.elite.enocean.enj.eep.EEP;
 import it.polito.elite.enocean.enj.eep.EEPIdentifier;
 import it.polito.elite.enocean.enj.eep.EEPRegistry;
+import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D201;
+import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D20109;
 import it.polito.elite.enocean.enj.eep.eep26.D5.D500.D500;
 import it.polito.elite.enocean.enj.eep.eep26.D5.D500.D50001;
 import it.polito.elite.enocean.enj.eep.eep26.F6.F602.F602;
@@ -525,8 +527,7 @@ public class EnJConnection implements PacketListener
 
 	private void handleRadioPacket(Radio pkt)
 	{
-		this.logger.info("Received: "
-				+ ByteUtils.toHexString(pkt.getPacketAsBytes()));
+		this.logger.info("Received: " + ByteUtils.toHexString(pkt.getPacketAsBytes()));
 		// this.logger.info("Payload: "+ByteUtils.toHexString(pkt.getDataPayload()));
 		EEP26Telegram telegram = EEP26TelegramFactory.getEEP26Telegram(pkt);
 
@@ -708,7 +709,9 @@ public class EnJConnection implements PacketListener
 			{
 				// build a new RPS device
 				this.addNewDevice(rpsTelegram.getAddress(), null,
-						new EEPIdentifier(F602.rorg, F602.func, F60201.type));
+						new EEPIdentifier(F602.rorg, F602.func, F60201.type)
+						//new EEPIdentifier(D201.rorg, D201.func, D20109.type)
+				);
 			}
 		}
 

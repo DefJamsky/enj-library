@@ -55,6 +55,8 @@ public class SimpleRockerSwitchListener implements EEPAttributeChangeListener
 			boolean b0 = action.getButtonValue(EEP26RockerSwitch2RockerAction.BO);
 			
 			this.logger.info("A0: "+a0+" A1: "+a1+" B0: "+b0+" B1: "+b1);
+			//Use b0 and b1
+
 		}
 
 	}

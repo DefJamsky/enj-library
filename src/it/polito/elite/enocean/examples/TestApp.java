@@ -24,9 +24,12 @@ import java.io.InputStreamReader;
 import it.polito.elite.enocean.enj.communication.EnJConnection;
 import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D20109;
 import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D201UnitOfMeasure;
+import it.polito.elite.enocean.enj.eep.eep26.F6.F602.F60201;
 import it.polito.elite.enocean.enj.link.EnJLink;
 import it.polito.elite.enocean.enj.model.EnOceanDevice;
 import it.polito.elite.enocean.examples.util.Options;
+import it.polito.elite.enocean.ihm.IhmImmitRockEnocean;
+import it.polito.elite.enocean.ihm.Interface;
 
 /**
  * @author bonino
@@ -60,9 +63,10 @@ public class TestApp
 						"-p port",
 						"The serial port to which the EnOcean dongle / adapter is connected",
 						"-f persistent-device-file",
-						"The file on which persisting devices", "-m mode",
+						"The file on which persisting devices",
+						"-m mode",
 						"the testmode, either [interactive,demo], default is demo" },
-				"java TestApp", args);
+				"java TestApp", new String[]{"-p","COM6", "-m", "interactive"});
 
 		// create an instance of TestApp
 		TestApp app = new TestApp();
@@ -152,56 +156,50 @@ public class TestApp
 		// Thread.sleep(11000);
 
 		// ---------- Smart teach-in -------------
-
 		// teach-in for 2s
-		System.out.println("Enabling smart teach-in for 2s");
+		/*System.out.println("Enabling smart teach-in for 2s");
 		connection.setSmartTeachIn(true);
 		System.out.println("SmartTeachIn: "
 				+ connection.isSmartTeachInEnabled());
-		connection.enableTeachIn(12000);
+		connection.enableTeachIn(10000);
 		System.out.println("SmartTeachIn: "
 				+ connection.isSmartTeachInEnabled());
 
-		Thread.sleep(12000);
+		Thread.sleep(10000);
 
 		connection.setSmartTeachIn(false);
 		System.out.println("SmartTeachIn: "
 				+ connection.isSmartTeachInEnabled());
 
-		Thread.sleep(2000);
+		Thread.sleep(2000);*/
 
 		// ----------- actuation test ------------
 
 		// get the device by high-level uid
-		EnOceanDevice device = connection.getDevice(25673502);
-
+		EnOceanDevice device = connection.getDevice(25695573);//Id awag omnio UPS230/10
+		device = null;
 		// check not null
 		if (device != null)
 		{
-
 			// get the device eep
-			D20109 eep = (D20109) device.getEEP();
+			F60201 eep = (F60201) device.getEEP();
 
-			eep.actuatorSetMeasurement(connection, device.getAddress(), true,
-					true, true, 0, 0, D201UnitOfMeasure.kW, 10, 1);
+			/*eep.actuatorSetMeasurement(connection, device.getAddress(), true,
+					true, true, 0, 0, D201UnitOfMeasure.kW, 10, 1);*/
 
-			for (int i = 0; i < 10; i++)
-			{
 				System.out.println("Sending command");
 
 				// if the device is not null, toggle its status
 				if (device != null)
 				{
-
-					// toggle the status
-					eep.actuatorSetOuput(connection, device.getAddress(),
-							((i % 2) == 0) ? true : false);
-
+					new Interface(eep, connection, device);//Device represent the OMNIO module, not necessary
 					Thread.sleep(3000);
 				}
-			}
+		}else{
+			new IhmImmitRockEnocean(new F60201(), connection);//we just send command like a rock enocean, omnio must learn first our ID
 		}
 	}
+
 
 	public void interactiveDemo(EnJConnection connection) throws IOException,
 			InterruptedException
