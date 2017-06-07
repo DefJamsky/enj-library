@@ -415,6 +415,41 @@ public class EnJConnection implements PacketListener
 	}
 
 	/**
+	 * Sends the given payload encapsulated into a Radio message, automatically
+	 * adds sender address and status to the payload, thus completing the actual
+	 * payload being sent. By default the gateway address is fixed at 0x00ffffff
+	 * and the status byte at 0x00.
+	 *
+	 * @param address
+	 * @param payload
+	 */
+	public void sendRadioCommand(byte[] address, byte[] payload, byte status)
+	{
+		// add sender address and status
+		byte actualPayload[] = new byte[payload.length + 5];
+
+		// copy the payload
+		for (int i = 0; i < payload.length; i++)
+			actualPayload[i] = payload[i];
+
+		// sender address
+		// TODO: remove hardcoding if possible!!!
+		actualPayload[payload.length] = (byte) 0x00;
+		actualPayload[payload.length + 1] = (byte) 0xFF;
+		actualPayload[payload.length + 2] = (byte) 0xFF;
+		actualPayload[payload.length + 3] = (byte) 0xFF;
+
+		// status
+		actualPayload[payload.length + 4] = status;
+
+		// build the link-layer packet
+		Radio enjLinkPacket = Radio.getRadio(address, actualPayload, true);
+
+		// send the packet
+		this.linkLayer.send(enjLinkPacket);
+	}
+
+	/**
 	 * @return the smartTeachIn
 	 */
 	public boolean isSmartTeachInEnabled()
@@ -694,7 +729,7 @@ public class EnJConnection implements PacketListener
 		{
 
 			// the only teach-in procedure supported by the EEP2.6 specification
-			// is direct and esplicit tech-in, mening that the device to
+			// is direct and explicit tech-in, meaning that the device to
 			// teach-in and the corresponding profile are known in advance.
 			// Since this assumption may sometimes be a little bit limiting, a
 			// mechanism for enabling implicit teach-in is also provided. This
@@ -710,7 +745,6 @@ public class EnJConnection implements PacketListener
 				// build a new RPS device
 				this.addNewDevice(rpsTelegram.getAddress(), null,
 						new EEPIdentifier(F602.rorg, F602.func, F60201.type)
-						//new EEPIdentifier(D201.rorg, D201.func, D20109.type)
 				);
 			}
 		}
@@ -753,7 +787,6 @@ public class EnJConnection implements PacketListener
 		}
 
 		return device;
-
 	}
 
 	private EnOceanDevice handle4BSTeachIn(ESP3Packet pkt)

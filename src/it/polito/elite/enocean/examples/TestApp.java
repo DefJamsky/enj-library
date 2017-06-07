@@ -20,6 +20,10 @@ package it.polito.elite.enocean.examples;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import it.polito.elite.enocean.enj.communication.EnJConnection;
 import it.polito.elite.enocean.enj.eep.eep26.D2.D201.D20109;
@@ -30,6 +34,7 @@ import it.polito.elite.enocean.enj.model.EnOceanDevice;
 import it.polito.elite.enocean.examples.util.Options;
 import it.polito.elite.enocean.ihm.IhmImmitRockEnocean;
 import it.polito.elite.enocean.ihm.Interface;
+import it.polito.elite.enocean.ihm.teachInterface;
 
 /**
  * @author bonino
@@ -38,10 +43,15 @@ import it.polito.elite.enocean.ihm.Interface;
 public class TestApp
 {
 	// supported test modes
+	protected static final String BINDING_MODE = "bind";
+	protected static final String TEACH_MODE = "teach";
 	protected static final String DEMO_MODE = "demo";
 	protected static final String INTERACTIVE_MODE = "interactive";
 	protected static final String HELP = "help";
 	protected static final String DEMO = "demo";
+	protected static final String TEACH = "teach";
+
+
 
 	/**
 	 * 
@@ -66,7 +76,7 @@ public class TestApp
 						"The file on which persisting devices",
 						"-m mode",
 						"the testmode, either [interactive,demo], default is demo" },
-				"java TestApp", new String[]{"-p","COM6", "-m", "interactive"});
+				"java TestApp", new String[]{"-p","COM6", "-m", "teach"});
 
 		// create an instance of TestApp
 		TestApp app = new TestApp();
@@ -102,9 +112,17 @@ public class TestApp
 				String optMode = opt.getValue('m');
 
 				// change operating mode only if specified
-				if ((optMode != null) && (!optMode.isEmpty()))
-					if (optMode.equalsIgnoreCase(TestApp.INTERACTIVE_MODE))
+				if ((optMode != null) && (!optMode.isEmpty())){
+					if (optMode.equalsIgnoreCase(TestApp.INTERACTIVE_MODE)){
 						mode = TestApp.INTERACTIVE_MODE;
+					}else if(optMode.equalsIgnoreCase(TestApp.BINDING_MODE)){
+						mode = TestApp.BINDING_MODE;
+					}else if(optMode.equalsIgnoreCase(TestApp.TEACH_MODE)){
+						mode = TestApp.TEACH_MODE;
+					}
+				}
+
+
 
 				// handle plain old demo mode
 				// TODO: generalize the demo mode to work in generic usage
@@ -123,6 +141,10 @@ public class TestApp
 
 					// stop the application
 					System.exit(0);
+				}else if(mode.equals(TestApp.BINDING_MODE)){
+					BindingController.getInstance().performBinding(connection);
+				}else if(mode.equals(TestApp.TEACH_MODE)){
+					new teachInterface(connection);
 				}
 
 			}
@@ -255,5 +277,8 @@ public class TestApp
 			}
 		}
 	}
+
+
+
 
 }

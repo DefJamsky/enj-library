@@ -144,7 +144,7 @@ public class F60201 extends F602
 					}
 
 				}
-				else if (message.isActionMessage() == false)
+				else
 				{
 					// get the number of buttons attribute
 					EEP26RockerSwitch2RockerButtonCount btnCountAttribute = (EEP26RockerSwitch2RockerButtonCount) this
@@ -206,9 +206,9 @@ public class F60201 extends F602
 	 * @param command true for ON, false for off
 	 */
 	public void actuatorSetOuput(EnJConnection connection,
-								 byte[] deviceAddress, boolean command)
+								 byte[] deviceAddress, byte command, byte status)
 	{
 		// exec the command by using the D201 general purpose implementation
-		super.actuatorSetOutput(connection, deviceAddress, command ? (byte) 0x50 : (byte) 0x70);
+		super.actuatorSetOutput(connection, deviceAddress, command, status);
 	}
 }

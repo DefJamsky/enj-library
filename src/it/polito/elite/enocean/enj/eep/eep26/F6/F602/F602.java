@@ -72,7 +72,7 @@ public abstract class F602 extends EEP
 	 *            The required ouput value. A byte representing the value of click
 	 *            between ON (0x50) and OFF (0x70).
 	 */
-	public void actuatorSetOutput(EnJConnection connection, byte[] deviceAddress, byte outputValue)
+	public void actuatorSetOutput(EnJConnection connection, byte[] deviceAddress, byte outputValue, byte status)
 	{
 		// prepare the data payload to host "desired" values
 		byte dataByte[] = new byte[2];
@@ -84,6 +84,6 @@ public abstract class F602 extends EEP
 		dataByte[1] = outputValue;
 
 		// send the payload for connection-layer encapsulation
-		connection.sendRadioCommand(deviceAddress, dataByte);
+		connection.sendRadioCommand(deviceAddress, dataByte, status);
 	}
 }

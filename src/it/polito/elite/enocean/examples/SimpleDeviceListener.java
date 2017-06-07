@@ -19,16 +19,7 @@ package it.polito.elite.enocean.examples;
 
 import it.polito.elite.enocean.enj.communication.EnJDeviceListener;
 import it.polito.elite.enocean.enj.eep.EEPAttributeChangeListener;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26HandleRotation;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26HumidityLinear;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26PIRStatus;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26PowerMeasurement;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerAction;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26SupplyVoltage;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26SupplyVoltageAvailability;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26Switching;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26TemperatureInverseLinear;
-import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26TemperatureLinear;
+import it.polito.elite.enocean.enj.eep.eep26.attributes.*;
 import it.polito.elite.enocean.enj.model.EnOceanDevice;
 import it.polito.elite.enocean.enj.util.ByteUtils;
 
@@ -57,11 +48,17 @@ public class SimpleDeviceListener implements EnJDeviceListener
 				+ " - low-address: "
 				+ ByteUtils.toHexString(device.getAddress()));
 
+		//Todo add the device in database
+
 		SimpleMovementListener movementListener = new SimpleMovementListener();
 
 		// handle device types
 		if (device.getEEP().getChannelAttribute(0, EEP26RockerSwitch2RockerAction.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerAction.NAME, new SimpleRockerSwitchListener());
+			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerAction.NAME, new SimpleRockerSwitchListener(device));
+
+		//To enable release event
+		if (device.getEEP().getChannelAttribute(0, EEP26RockerSwitch2RockerButtonCount.NAME) != null)
+			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerButtonCount.NAME, new SimpleRockerSwitchListener(device));
 
 		if (device.getEEP().getChannelAttribute(0, EEP26TemperatureInverseLinear.NAME) != null)
 			device.getEEP().addEEP26AttributeListener(0, EEP26TemperatureInverseLinear.NAME, new SimpleTemperatureListener());
