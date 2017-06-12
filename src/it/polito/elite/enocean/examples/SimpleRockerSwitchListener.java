@@ -23,6 +23,7 @@ import it.polito.elite.enocean.enj.eep.EEPAttribute;
 import it.polito.elite.enocean.enj.eep.EEPAttributeChangeListener;
 import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerAction;
 import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerButtonCount;
+import it.polito.elite.enocean.enj.eep.eep26.attributes.EEP26RockerSwitch2RockerEnergyBow;
 import it.polito.elite.enocean.enj.model.EnOceanDevice;
 
 /**
@@ -33,7 +34,7 @@ public class SimpleRockerSwitchListener implements EEPAttributeChangeListener
 {
 	private Logger logger;
 	private EnOceanDevice associatedDevice;
-
+	private Boolean[] buttonValue;
 	/**
 	 * 
 	 */
@@ -57,14 +58,15 @@ public class SimpleRockerSwitchListener implements EEPAttributeChangeListener
 			boolean a0 = action.getButtonValue(EEP26RockerSwitch2RockerAction.AO);
 			boolean b1 = action.getButtonValue(EEP26RockerSwitch2RockerAction.BI);
 			boolean b0 = action.getButtonValue(EEP26RockerSwitch2RockerAction.BO);
-			
-			this.logger.info("A0: " + a0 + " A1: " + a1 + " B0: " + b0 + " B1: " + b1);
-			BindingController.getInstance().newRockerSwitchEvent(associatedDevice, a0, a1, b0, b1);
+			buttonValue = action.getValue();
+			//this.logger.info("A0: " + a0 + " A1: " + a1 + " B0: " + b0 + " B1: " + b1);
+			BindingController.getInstance().newRockerSwitchEvent(associatedDevice, buttonValue);
 
-		}else if(attribute instanceof EEP26RockerSwitch2RockerButtonCount){
-			EEP26RockerSwitch2RockerButtonCount action = (EEP26RockerSwitch2RockerButtonCount)attribute;
+		}else if(attribute instanceof EEP26RockerSwitch2RockerEnergyBow){
+			EEP26RockerSwitch2RockerEnergyBow action = (EEP26RockerSwitch2RockerEnergyBow)attribute;
 			//System.out.println("Release" + action.getValue());
-			BindingController.getInstance().releaseRockerSwitch(associatedDevice);
+			if(!action.getValue())//Release
+				BindingController.getInstance().releaseRockerSwitch(associatedDevice);
 		}
 	}
 }

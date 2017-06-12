@@ -44,6 +44,7 @@ public class SimpleTemperatureAndHumidityListener implements
 	/* (non-Javadoc)
 	 * @see it.polito.elite.enocean.enj.eep.EEPAttributeChangeListener#handleAttributeChange(int, it.polito.elite.enocean.enj.eep.EEPAttribute)
 	 */
+
 	@Override
 	public void handleAttributeChange(int channelId, EEPAttribute<?> attribute)
 	{

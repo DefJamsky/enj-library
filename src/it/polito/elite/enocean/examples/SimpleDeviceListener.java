@@ -57,8 +57,8 @@ public class SimpleDeviceListener implements EnJDeviceListener
 			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerAction.NAME, new SimpleRockerSwitchListener(device));
 
 		//To enable release event
-		if (device.getEEP().getChannelAttribute(0, EEP26RockerSwitch2RockerButtonCount.NAME) != null)
-			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerButtonCount.NAME, new SimpleRockerSwitchListener(device));
+		if (device.getEEP().getChannelAttribute(0, EEP26RockerSwitch2RockerEnergyBow.NAME) != null)
+			device.getEEP().addEEP26AttributeListener(0, EEP26RockerSwitch2RockerEnergyBow.NAME, new SimpleRockerSwitchListener(device));
 
 		if (device.getEEP().getChannelAttribute(0, EEP26TemperatureInverseLinear.NAME) != null)
 			device.getEEP().addEEP26AttributeListener(0, EEP26TemperatureInverseLinear.NAME, new SimpleTemperatureListener());
